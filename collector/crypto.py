@@ -22,7 +22,7 @@ def collect_crypto():
         items.append(item)
 
     # Save to dynamodb
-    dynamodb = boto3.resource('dynamodb', region_name='ap-northeast-2')
+    dynamodb = boto3.resource('dynamodb', 'ap-northeast-2')
     table = dynamodb.Table('crypto')
 
     with table.batch_writer() as batch:

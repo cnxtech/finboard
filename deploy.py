@@ -19,6 +19,7 @@ def make_zipfile(directory, zf):
     for root, dirs, files in os.walk(directory):
         for filename in files:
             if not filename.endswith('.pyc'):
+                os.chmod(os.path.join(root, filename), 0o644)
                 zf.write(
                     os.path.join(root, filename),
                     os.path.join(

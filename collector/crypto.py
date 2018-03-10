@@ -1,13 +1,13 @@
 import requests
 import boto3
 
-from .utils import convert_timestamp
+from utils import convert_timestamp
 
 url = 'https://api.bithumb.com/public/ticker/{}'
 currency = ["BTC", "ETH"]
 
 
-def collect_crypto():
+def collect(event, context):
     items = []
     for curr in currency:
         response = requests.get(url.format(curr))

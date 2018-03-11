@@ -34,7 +34,18 @@ def upload_to_s3():
     s3.upload_file('collector.zip', 'rogers-collector', 'collector.zip')
 
 
+def update_lambda_function(function_name):
+    lambda_f = boto3.client('lambda', 'ap-northeast-2')
+    for func in function_name:
+        lambda_f.update_function_code(
+            FunctionName=func,
+            S3Bucket='rogers-collector',
+            S3Key='collector.zip',
+        )
+
+
 if __name__ == "__main__":
+    functions = ['collect_crypto']
     lambda_dir = os.getcwd()
     pip_install(lambda_dir)
 
@@ -48,4 +59,6 @@ if __name__ == "__main__":
     make_zipfile(os.path.join(lambda_dir, 'dist/'), zipf)
     zipf.close()
 
+    # Upload and update lambda function
     upload_to_s3()
+    update_lambda_function(functions)

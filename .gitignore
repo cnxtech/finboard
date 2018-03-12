@@ -102,3 +102,4 @@ ENV/
 
 # custom settings
 collector.zip
+*.cfg

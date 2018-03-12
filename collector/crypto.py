@@ -1,25 +1,24 @@
-import requests
 import boto3
 
-from utils import convert_timestamp
-
-url = 'https://api.bithumb.com/public/ticker/{}'
-currency = ["BTC", "ETH"]
+from crypto.bithumb import ParserBithumb
+from crypto.coinone import ParserCoinone
+from crypto.korbit import ParserKorbit
 
 
 def collect(event, context):
     items = []
-    for curr in currency:
-        response = requests.get(url.format(curr))
-        result = response.json()["data"]
+    parser_class = {
+        "bithumb": ParserBithumb,
+        "coinone": ParserCoinone,
+        "korbit": ParserKorbit
+    }
 
-        item = dict(
-            currency=curr,
-            price=int(result["closing_price"]),
-            volume=round(float(result["units_traded"])),
-            date=convert_timestamp(result['date'])
-        )
-        items.append(item)
+    for exchange, Parser in parser_class.items():
+        parser = Parser()
+
+        for curr in parser.currency:
+            item = parser.parse(exchange, curr)
+            items.append(item)
 
     # Save to dynamodb
     dynamodb = boto3.resource('dynamodb', 'ap-northeast-2')

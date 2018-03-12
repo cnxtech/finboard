@@ -1,6 +1,15 @@
+import json
+import os
 from datetime import datetime
 
 
+def conf(target):
+    path = os.path.join(os.getcwd(), 'config.json')
+    with open(path, 'r') as f:
+        config = json.load(f)
+    return config[target]
+
+
 def convert_timestamp(timestamp):
-    time = datetime.fromtimestamp(int(timestamp)/1000.0)
+    time = datetime.fromtimestamp(int(timestamp) / 1000.0)
     return time.strftime("%Y-%m-%d %H:%M:%S")

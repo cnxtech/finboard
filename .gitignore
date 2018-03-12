@@ -103,3 +103,4 @@ ENV/
 # custom settings
 collector.zip
 *.cfg
+.pytest_cache/

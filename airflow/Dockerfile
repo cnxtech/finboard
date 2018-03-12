@@ -47,7 +47,12 @@ RUN pip install -U pip setuptools wheel \
   && pip install slackclient==1.1.3 \
   && pip install boto3==1.6.6 \
   && pip install PyMySQL==0.7.11 \
-  && pip install apache-airflow[crypto,password,s3,slack,mysql]==$AIRFLOW_VERSION
+
+RUN mkdir /tmp/incubator-airflow \
+    && cd /tmp/incubator-airflow \
+    && git clone -b master https://github.com/apache/incubator-airflow.git /tmp/incubator-airflow \
+    && pip install . .[crypto] .[password] .[s3] .[slack] .[mysql] \
+    && rm -rf /tmp/incubator-airflow
 
 EXPOSE 8080
 

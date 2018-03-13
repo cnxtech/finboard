@@ -1,7 +1,7 @@
 import requests
 
 from utils import conf
-from utils import convert_timestamp
+from utils import convert_timestamp_mills
 
 
 class ParserBithumb:
@@ -18,6 +18,6 @@ class ParserBithumb:
             currency=curr.lower(),
             price=int(result["closing_price"]),
             volume=round(float(result["units_traded"])),
-            date=convert_timestamp(result['date'])
+            date=convert_timestamp_mills(result['date'])
         )
         return item

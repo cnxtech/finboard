@@ -1,7 +1,7 @@
 import requests
 
 from utils import conf
-from utils import convert_timestamp
+from utils import convert_timestamp_mills
 
 
 class ParserKorbit:
@@ -19,6 +19,6 @@ class ParserKorbit:
             currency=curr.replace("_krw", ""),
             price=int(result["last"]),
             volume=round(float(result["volume"])),
-            date=convert_timestamp(result['timestamp'])
+            date=convert_timestamp_mills(result['timestamp'])
         )
         return item

@@ -11,5 +11,10 @@ def conf(target):
 
 
 def convert_timestamp(timestamp):
+    time = datetime.fromtimestamp(int(timestamp))
+    return time.strftime("%Y-%m-%d %H:%M:%S")
+
+
+def convert_timestamp_mills(timestamp):
     time = datetime.fromtimestamp(int(timestamp) / 1000.0)
     return time.strftime("%Y-%m-%d %H:%M:%S")

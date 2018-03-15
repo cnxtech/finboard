@@ -12,21 +12,25 @@ def collect(event, context):
         "korbit": ParserKorbit
     }
 
-    exchange = event['type']
-    parser = parser[exchange]()
+    target = event['target']
+    parser = parser[target]()
     items = []
 
     for curr in parser.currency:
-        item = parser.parse(exchange, curr)
+        item = parser.parse(target, curr)
         items.append(item)
         print(item)
 
     # Save to dynamodb
     dynamodb = boto3.resource('dynamodb', 'ap-northeast-2')
-    table = dynamodb.Table('test')
+    table = dynamodb.Table('crypto')
 
     with table.batch_writer() as batch:
         for each in items:
             batch.put_item(Item=each)
-
     print("collect crypto finished!")
+
+
+# For test
+if __name__ == '__main__':
+    collect({"type": "bithumb"}, None)

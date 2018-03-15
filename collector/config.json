@@ -10,5 +10,9 @@
     "korbit": {
         "url": "https://api.korbit.co.kr/v1/ticker/detailed",
         "currency": ["btc_krw", "eth_krw", "xrp_krw"]
+    },
+    "exchange": {
+        "url": "http://info.finance.naver.com/marketindex/exchangeList.nhn",
+        "currency": ["USD", "EUR", "JPY", "CNY"]
     }
 }

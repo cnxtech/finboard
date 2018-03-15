@@ -42,6 +42,7 @@ def create_lambda_function(function_name):
         FunctionName='collect_{}'.format(function_name),
         Runtime='python3.6',
         Role=os.getenv('LAMBDA_ROLE'),
+        Timeout=3,
         Handler='collect_{}.collect'.format(function_name),
         Code={
             'S3Bucket': 'rogers-collector',
@@ -52,12 +53,12 @@ def create_lambda_function(function_name):
 
 
 def invoke_lambda_function(function_name, payload):
-    payload = {"type": payload}
+    payload = {"target": payload}
     lambda_f = boto3.client('lambda', 'ap-northeast-2')
     res = lambda_f.invoke(
         FunctionName='collect_{}'.format(function_name),
         InvocationType='RequestResponse',
-        Payload=bytes(json.dumps(payload))
+        Payload=bytes(json.dumps(payload, ensure_ascii=False).encode('utf8'))
     )
     print(res)
 

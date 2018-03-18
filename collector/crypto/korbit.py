@@ -8,6 +8,7 @@ class ParserKorbit:
     def __init__(self):
         self.url = conf('korbit')['url']
         self.currency = conf('korbit')['currency']
+        self.table = 'crypto'
 
     def parse(self, exchange, curr):
         params = {"currency_pair": curr}

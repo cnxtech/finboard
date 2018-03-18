@@ -8,6 +8,7 @@ class ParserBithumb:
     def __init__(self):
         self.url = conf('bithumb')['url']
         self.currency = conf('bithumb')['currency']
+        self.table = 'crypto'
 
     def parse(self, exchange, curr):
         response = requests.get(self.url + curr)

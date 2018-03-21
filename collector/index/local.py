@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from utils import conf
-from utils import convert_datetime_format
+from utils import current_datetime
 
 index_dict = {
     "코스피": "KOSPI",
@@ -21,7 +21,6 @@ class ParserLocal:
     def parse(self):
         response = requests.get(self.url).text
         bs = BeautifulSoup(response, "html.parser")
-        date_str = ' '.join(bs.find('span', id='time1').text.split())
 
         for each in bs.find('div', class_='lft').find_all('li', onmouseover=True):
             rows = [i.text for i in each.find_all('span')]
@@ -30,7 +29,7 @@ class ParserLocal:
                 price=rows[1],
                 status=rows[2].split()[0],
                 rate=rows[2].split()[1][:-2],
-                date=convert_datetime_format(date_str, "%Y.%m.%d %H:%M장중")
+                date=current_datetime()
             )
             self.items.append(item)
 

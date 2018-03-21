@@ -19,11 +19,11 @@ def collect(event, context):
     for curr in parser.currency:
         item = parser.parse(target, curr)
         items.append(item)
-        print(item)
+    print(*items, sep='\n')
 
     # Save to dynamodb
     dynamodb = boto3.resource('dynamodb', 'ap-northeast-2')
-    table = dynamodb.Table('crypto')
+    table = dynamodb.Table(parser.table)
 
     with table.batch_writer() as batch:
         for each in items:
@@ -33,4 +33,4 @@ def collect(event, context):
 
 # For test
 if __name__ == '__main__':
-    collect({"type": "bithumb"}, None)
+    collect({"target": "bithumb"}, None)

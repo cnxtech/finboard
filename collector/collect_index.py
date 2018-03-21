@@ -1,11 +1,15 @@
 import boto3
 
 from index.exchange import ParserExchange
+from index.local import ParserLocal
+from index.world import ParserWorld
 
 
 def collect(event, context):
     parser = {
         "exchange": ParserExchange,
+        "local": ParserLocal,
+        "world": ParserWorld
     }
 
     target = event['target']
@@ -15,7 +19,7 @@ def collect(event, context):
 
     # Save to dynamodb
     dynamodb = boto3.resource('dynamodb', 'ap-northeast-2')
-    table = dynamodb.Table(target)
+    table = dynamodb.Table(parser.table)
 
     with table.batch_writer() as batch:
         for each in items:
@@ -25,4 +29,4 @@ def collect(event, context):
 
 # For test
 if __name__ == '__main__':
-    collect({"type": "exchange"}, None)
+    collect({"target": "world"}, None)

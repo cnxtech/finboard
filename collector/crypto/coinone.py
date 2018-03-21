@@ -8,6 +8,7 @@ class ParserCoinone:
     def __init__(self):
         self.url = conf('coinone')['url']
         self.currency = conf('coinone')['currency']
+        self.table = 'crypto'
 
     def parse(self, exchange, curr):
         params = {"currency": curr}

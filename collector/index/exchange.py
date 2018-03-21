@@ -11,13 +11,14 @@ class ParserExchange:
     def __init__(self):
         self.url = conf('exchange')['url']
         self.currency = conf('exchange')['currency']
+        self.table = 'market'
         self.items = []
 
     def parse(self):
         response = requests.get(self.url).text
         bs = BeautifulSoup(response, "html.parser")
 
-        table = bs.find('table', attrs={'class': 'tbl_exchange'})
+        table = bs.find('table', class_='tbl_exchange')
         rows = table.find('tbody').find_all('tr')
 
         for row in rows:

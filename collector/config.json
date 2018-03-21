@@ -18,5 +18,9 @@
     "world": {
         "url": "http://finance.naver.com/world/worldIndex.nhn",
         "currency": []
+    },
+    "local": {
+        "url": "http://finance.naver.com/sise/",
+        "currency": []
     }
 }

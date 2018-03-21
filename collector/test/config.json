@@ -1,0 +1,26 @@
+{
+    "bithumb": {
+        "url": "https://api.bithumb.com/public/ticker/",
+        "currency": ["BTC", "ETH", "XRP"]
+    },
+    "coinone": {
+        "url": "https://api.coinone.co.kr/ticker/",
+        "currency": ["btc", "eth", "xrp"]
+    },
+    "korbit": {
+        "url": "https://api.korbit.co.kr/v1/ticker/detailed",
+        "currency": ["btc_krw", "eth_krw", "xrp_krw"]
+    },
+    "exchange": {
+        "url": "http://info.finance.naver.com/marketindex/exchangeList.nhn",
+        "currency": ["USD", "EUR", "JPY", "CNY"]
+    },
+    "world": {
+        "url": "http://finance.naver.com/world/worldIndex.nhn",
+        "currency": []
+    },
+    "local": {
+        "url": "http://finance.naver.com/sise/",
+        "currency": []
+    }
+}

@@ -1,17 +1,11 @@
 import unittest
 
-from index.exchange import ParserExchange
 from index.local import ParserLocal
 from index.market import ParserMarket
 from index.world import ParserWorld
 
 
 class TestStringMethods(unittest.TestCase):
-
-    def test_exchange(self):
-        parser = ParserExchange()
-        result = parser.parse()
-        self.assertNotEqual(len(result), 0)
 
     def test_local(self):
         parser = ParserLocal()

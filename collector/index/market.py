@@ -1,3 +1,5 @@
+import re
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -23,12 +25,34 @@ class ParserMarket:
         response = requests.get(self.url).text
         bs = BeautifulSoup(response, "html.parser")
 
+        # Get exchange items
+        table = bs.find('ul', id='exchangeList')
+        for each in table.find_all('li'):
+            if each.find('div', class_='head_info').attrs['class'][1] == 'point_up':
+                status = each.find('span', class_='change').text.replace(" ", "")
+            else:
+                status = "-" + each.find('span', class_='change').text.replace(" ", "")
+
+            item = dict(
+                name=re.sub('[^a-zA-Z]+', '', each.find('span').text),
+                price=each.find('span', class_='value').text,
+                status=status,
+                date=convert_datetime_string(each.find('span', class_='time').text)
+            )
+            self.items.append(item)
+
+        # Get oil, gold items
         table = bs.find('ul', id='oilGoldList')
         for each in table.find_all('li'):
+            if each.find('div', class_='head_info').attrs['class'][1] == 'point_up':
+                status = each.find('span', class_='change').text.replace(" ", "")
+            else:
+                status = "-" + each.find('span', class_='change').text.replace(" ", "")
+
             item = dict(
                 name=index_dict[each.find('span').text],
                 price=each.find('span', class_='value').text,
-                status=each.find('span', class_='change').text.replace(" ", ""),
+                status=status,
                 date=convert_datetime_string(each.find('span', class_='time').text)
             )
             self.items.append(item)

@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
+from utils import add_status
 from utils import calculate_ratio
 from utils import conf
 from utils import convert_datetime_string
@@ -34,11 +35,8 @@ class ParserWorld:
 
             rows = bs.find('table', id='dayTable').find('tbody')
             price = rows.find('span').text
-
-            if rows.find('tr').attrs['class'][0] == 'point_up':
-                status = rows.find('span', class_='point_status').text
-            else:
-                status = "-" + rows.find('span', class_='point_status').text
+            status = add_status(rows.find('tr').attrs['class'][0],
+                                rows.find('span', class_='point_status').text, "point_dn")
 
             item = dict(
                 name=index_dict[curr],

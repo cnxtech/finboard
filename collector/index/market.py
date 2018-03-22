@@ -3,6 +3,7 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
+from utils import add_status
 from utils import conf
 from utils import convert_datetime_string
 
@@ -28,10 +29,8 @@ class ParserMarket:
         # Get exchange items
         table = bs.find('ul', id='exchangeList')
         for each in table.find_all('li'):
-            if each.find('div', class_='head_info').attrs['class'][1] == 'point_up':
-                status = each.find('span', class_='change').text.replace(" ", "")
-            else:
-                status = "-" + each.find('span', class_='change').text.replace(" ", "")
+            status = add_status(each.find('div', class_='head_info').attrs['class'][1],
+                                each.find('span', class_='change').text, "point_dn")
 
             item = dict(
                 name=re.sub('[^a-zA-Z]+', '', each.find('span').text),
@@ -44,10 +43,8 @@ class ParserMarket:
         # Get oil, gold items
         table = bs.find('ul', id='oilGoldList')
         for each in table.find_all('li'):
-            if each.find('div', class_='head_info').attrs['class'][1] == 'point_up':
-                status = each.find('span', class_='change').text.replace(" ", "")
-            else:
-                status = "-" + each.find('span', class_='change').text.replace(" ", "")
+            status = add_status(each.find('div', class_='head_info').attrs['class'][1],
+                                each.find('span', class_='change').text, "point_dn")
 
             item = dict(
                 name=index_dict[each.find('span').text],

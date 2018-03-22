@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
+from utils import add_status
 from utils import conf
 from utils import current_datetime
 
@@ -25,17 +26,13 @@ class ParserLocal:
         for each in bs.find('div', class_='lft').find_all('li', onmouseover=True):
             rows = [i.text for i in each.find_all('span')]
             tmp = rows[2].split()
-
-            if tmp[1][0] is '-':
-                status = "-" + tmp[0]
-            else:
-                status = tmp[0]
+            status = add_status(tmp[1][0], tmp[0], "-")
 
             item = dict(
                 name=index_dict[rows[0]],
                 price=rows[1],
                 status=status,
-                rate=tmp[1][:-3],
+                rate=tmp[1][:-3].replace("+", ""),
                 date=current_datetime()
             )
             self.items.append(item)

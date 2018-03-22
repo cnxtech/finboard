@@ -13,6 +13,14 @@ def conf(target: str):
     return config[target]
 
 
+def add_status(cls_name, status, value):
+    status = status.replace(" ", "")
+    if cls_name == value:
+        return "-" + status
+    else:
+        return status
+
+
 def calculate_ratio(status: str, price: str):
     return str(round((float(status) / float(price)) * 100, 2))
 

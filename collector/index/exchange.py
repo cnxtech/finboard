@@ -11,7 +11,7 @@ class ParserExchange:
     def __init__(self):
         self.url = conf('exchange')['url']
         self.currency = conf('exchange')['currency']
-        self.table = 'market'
+        self.table = 'exchange'
         self.items = []
 
     def parse(self):

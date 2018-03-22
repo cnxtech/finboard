@@ -2,6 +2,7 @@ import boto3
 
 from index.exchange import ParserExchange
 from index.local import ParserLocal
+from index.market import ParserMarket
 from index.world import ParserWorld
 
 
@@ -9,6 +10,7 @@ def collect(event, context):
     parser = {
         "exchange": ParserExchange,
         "local": ParserLocal,
+        "market": ParserMarket,
         "world": ParserWorld
     }
 
@@ -29,4 +31,4 @@ def collect(event, context):
 
 # For test
 if __name__ == '__main__':
-    collect({"target": "world"}, None)
+    collect({"target": "exchange"}, None)

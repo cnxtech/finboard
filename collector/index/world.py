@@ -1,19 +1,21 @@
 import requests
 from bs4 import BeautifulSoup
 
+from utils import calculate_ratio
 from utils import conf
-from utils import convert_datetime_format
+from utils import convert_datetime_string
 
 index_dict = {
-    "다우 산업": "DJI",
-    "니케이 225": "NII",
-    "영국 FTSE 100": "FTSE",
-    "나스닥 종합": "NAS",
-    "상해종합": "SHS",
-    "프랑스 CAC 40": "CAC",
-    "S&P500": "SPI",
-    "항셍": "HSI",
-    "독일 DAX": "DAX"
+    "DJI@DJI": "DJI",
+    "NII@NI225": "NII",
+    "LNS@FTSE100": "FTSE",
+    "NAS@IXIC": "NAS",
+    "SHS@000001": "SHS",
+    "PAS@CAC40": "CAC",
+    "SPI@SPX": "SPI",
+    "HSI@HSI": "HSI",
+    "XTR@DAX30": "DAX",
+    "INI@BSE30": "SENSEX"
 }
 
 
@@ -25,19 +27,26 @@ class ParserWorld:
         self.items = []
 
     def parse(self):
-        response = requests.get(self.url).text
-        bs = BeautifulSoup(response, "html.parser")
+        for curr in self.currency:
+            params = {"symbol": curr}
+            response = requests.get(self.url, params).text
+            bs = BeautifulSoup(response, "html.parser")
 
-        for each in bs.find_all('div', class_='data'):
-            for row in each.find_all('li'):
-                date_str = row.find('span', class_='date').text
-                item = dict(
-                    name=index_dict[row.find('span').text],
-                    price=row.find('strong').text,
-                    status=row.find('em').text,
-                    rate=row.find('dd', class_='point_status').find('span').text,
-                    date=convert_datetime_format(date_str, "%Y.%m.%d %H:%M 기준")
-                )
-                self.items.append(item)
+            rows = bs.find('table', id='dayTable').find('tbody')
+            price = rows.find('span').text
+
+            if rows.find('tr').attrs['class'][0] == 'point_up':
+                status = rows.find('span', class_='point_status').text
+            else:
+                status = "-" + rows.find('span', class_='point_status').text
+
+            item = dict(
+                name=index_dict[curr],
+                date=convert_datetime_string(rows.find('td').text),
+                price=price,
+                status=status,
+                rate=calculate_ratio(status, price.replace(",", ""))
+            )
+            self.items.append(item)
 
         return self.items

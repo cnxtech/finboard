@@ -24,11 +24,18 @@ class ParserLocal:
 
         for each in bs.find('div', class_='lft').find_all('li', onmouseover=True):
             rows = [i.text for i in each.find_all('span')]
+            tmp = rows[2].split()
+
+            if tmp[1][0] is '-':
+                status = "-" + tmp[0]
+            else:
+                status = tmp[0]
+
             item = dict(
                 name=index_dict[rows[0]],
                 price=rows[1],
-                status=rows[2].split()[0],
-                rate=rows[2].split()[1][:-2],
+                status=status,
+                rate=tmp[1][:-3],
                 date=current_datetime()
             )
             self.items.append(item)

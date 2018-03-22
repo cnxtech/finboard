@@ -1,3 +1,6 @@
+from multiprocessing import Manager
+from multiprocessing import Pool
+
 import requests
 
 from utils import conf
@@ -9,16 +12,22 @@ class ParserBithumb:
         self.url = conf('bithumb')['url']
         self.currency = conf('bithumb')['currency']
         self.table = 'crypto'
+        self.items = Manager().list()
 
-    def parse(self, exchange, curr):
+    def parse(self, curr):
         response = requests.get(self.url + curr)
         result = response.json()["data"]
 
         item = dict(
-            exchange=exchange,
+            exchange="bithumb",
             currency=curr.lower(),
             price=int(result["closing_price"]),
             volume=round(float(result["units_traded"])),
             date=convert_timestamp_mills(result['date'])
         )
-        return item
+        self.items.append(item)
+
+    def get_items(self):
+        pool = Pool()
+        pool.map(self.parse, self.currency)
+        return self.items

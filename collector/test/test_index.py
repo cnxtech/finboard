@@ -5,7 +5,7 @@ from index.market import ParserMarket
 from index.world import ParserWorld
 
 
-class TestStringMethods(unittest.TestCase):
+class TestIndexCollector(unittest.TestCase):
 
     def test_local(self):
         parser = ParserLocal()
@@ -19,8 +19,9 @@ class TestStringMethods(unittest.TestCase):
 
     def test_world(self):
         parser = ParserWorld()
-        result = parser.parse()
-        self.assertNotEqual(len(result), 0)
+        for currency in parser.currency:
+            parser.parse(currency)
+            self.assertNotEqual(len(parser.items), 0)
 
 
 if __name__ == '__main__':

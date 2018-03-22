@@ -14,7 +14,7 @@ def collect(event, context):
 
     target = event['target']
     parser = parser[target]()
-    items = parser.parse()
+    items = parser.get_items()
     print(*items, sep='\n')
 
     # Save to dynamodb
@@ -29,4 +29,4 @@ def collect(event, context):
 
 # For test
 if __name__ == '__main__':
-    collect({"target": "market"}, None)
+    collect({"target": "world"}, None)

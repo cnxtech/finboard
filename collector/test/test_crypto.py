@@ -5,25 +5,25 @@ from crypto.coinone import ParserCoinone
 from crypto.korbit import ParserKorbit
 
 
-class TestStringMethods(unittest.TestCase):
+class TestCryptoCollector(unittest.TestCase):
 
     def test_bithumb(self):
         parser = ParserBithumb()
         for currency in parser.currency:
-            result = parser.parse('bithumb', currency)
-            self.assertTrue(isinstance(result, dict))
+            parser.parse(currency)
+            self.assertNotEqual(len(parser.items), 0)
 
     def test_coinone(self):
         parser = ParserCoinone()
         for currency in parser.currency:
-            result = parser.parse('coinone', currency)
-            self.assertTrue(isinstance(result, dict))
+            parser.parse(currency)
+            self.assertNotEqual(len(parser.items), 0)
 
     def test_korbit(self):
         parser = ParserKorbit()
         for currency in parser.currency:
-            result = parser.parse('korbit', currency)
-            self.assertTrue(isinstance(result, dict))
+            parser.parse(currency)
+            self.assertNotEqual(len(parser.items), 0)
 
 
 if __name__ == '__main__':

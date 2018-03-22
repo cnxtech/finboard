@@ -1,20 +1,20 @@
 import boto3
 
-from index.exchange import ParserExchange
 from index.local import ParserLocal
+from index.market import ParserMarket
 from index.world import ParserWorld
 
 
 def collect(event, context):
     parser = {
-        "exchange": ParserExchange,
         "local": ParserLocal,
+        "market": ParserMarket,
         "world": ParserWorld
     }
 
     target = event['target']
     parser = parser[target]()
-    items = parser.parse()
+    items = parser.get_items()
     print(*items, sep='\n')
 
     # Save to dynamodb

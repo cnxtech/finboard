@@ -14,11 +14,7 @@ def collect(event, context):
 
     target = event['target']
     parser = parser[target]()
-    items = []
-
-    for curr in parser.currency:
-        item = parser.parse(target, curr)
-        items.append(item)
+    items = parser.get_items()
     print(*items, sep='\n')
 
     # Save to dynamodb

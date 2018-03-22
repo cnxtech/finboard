@@ -11,16 +11,16 @@
         "url": "https://api.korbit.co.kr/v1/ticker/detailed",
         "currency": ["btc_krw", "eth_krw", "xrp_krw"]
     },
-    "exchange": {
-        "url": "http://info.finance.naver.com/marketindex/exchangeList.nhn",
-        "currency": ["USD", "EUR", "JPY", "CNY"]
-    },
     "world": {
-        "url": "http://finance.naver.com/world/worldIndex.nhn",
-        "currency": []
+        "url": "http://finance.naver.com/world/sise.nhn",
+        "currency": ["DJI@DJI", "NII@NI225", "LNS@FTSE100", "NAS@IXIC", "SHS@000001", "PAS@CAC40", "SPI@SPX", "HSI@HSI", "XTR@DAX30", "INI@BSE30"]
     },
     "local": {
         "url": "http://finance.naver.com/sise/",
+        "currency": []
+    },
+    "market": {
+        "url": "http://finance.naver.com/marketindex/",
         "currency": []
     }
 }

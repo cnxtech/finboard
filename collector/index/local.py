@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 
 from utils import add_status
-from utils import conf
 from utils import current_datetime
 
 index_dict = {
@@ -13,9 +12,9 @@ index_dict = {
 
 
 class ParserLocal:
-    def __init__(self):
-        self.url = conf('local')['url']
-        self.currency = conf('local')['currency']
+    def __init__(self, conf):
+        self.url = conf['url']
+        self.currency = conf['currency']
         self.table = 'index'
         self.items = []
 
@@ -37,4 +36,6 @@ class ParserLocal:
             )
             self.items.append(item)
 
+    def get_items(self):
+        self.parse()
         return self.items

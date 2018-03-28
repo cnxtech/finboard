@@ -13,7 +13,7 @@
     },
     "world": {
         "url": "http://finance.naver.com/world/sise.nhn",
-        "currency": ["DJI@DJI", "NII@NI225", "LNS@FTSE100", "NAS@IXIC", "SHS@000001", "PAS@CAC40", "SPI@SPX", "HSI@HSI", "XTR@DAX30", "INI@BSE30"]
+        "currency": ["DJI@DJI DJI", "NII@NI225 NII", "LNS@FTSE100 FTSE", "NAS@IXIC NAS", "SHS@000001 SHS", "PAS@CAC40 CAC", "SPI@SPX SPI", "HSI@HSI HSI", "XTR@DAX30 DAX", "INI@BSE30 SENSEX"]
     },
     "local": {
         "url": "http://finance.naver.com/sise/",
@@ -22,5 +22,9 @@
     "market": {
         "url": "http://finance.naver.com/marketindex/",
         "currency": []
+    },
+    "stock": {
+        "url": "http://finance.naver.com/item/sise_day.nhn?code={}",
+        "currency": ["035420 NAVER", "035720 KAKAO", "000660 HYNIX", "005930 SS_ELECTRON", "068270 CELLTRION"]
     }
 }

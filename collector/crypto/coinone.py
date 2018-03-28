@@ -3,14 +3,13 @@ from multiprocessing import Pool
 
 import requests
 
-from utils import conf
 from utils import convert_timestamp
 
 
 class ParserCoinone:
-    def __init__(self):
-        self.url = conf('coinone')['url']
-        self.currency = conf('coinone')['currency']
+    def __init__(self, conf):
+        self.url = conf['url']
+        self.currency = conf['currency']
         self.table = 'crypto'
         self.items = Manager().list()
 

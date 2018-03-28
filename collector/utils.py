@@ -5,9 +5,11 @@ from datetime import datetime
 
 import pandas as pd
 
+PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
 
-def conf(target: str):
-    path = os.path.join(os.getcwd(), 'config.json')
+
+def conf(target):
+    path = os.path.join(PROJECT_DIR, 'config.json')
     with open(path, 'r') as f:
         config = json.load(f)
     return config[target]
@@ -21,7 +23,7 @@ def add_status(cls_name, status, value):
         return status
 
 
-def calculate_ratio(status: str, price: str):
+def calculate_ratio(status, price):
     return str(round((float(status) / float(price)) * 100, 2))
 
 

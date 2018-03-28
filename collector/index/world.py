@@ -6,32 +6,19 @@ from bs4 import BeautifulSoup
 
 from utils import add_status
 from utils import calculate_ratio
-from utils import conf
 from utils import convert_datetime_string
-
-index_dict = {
-    "DJI@DJI": "DJI",
-    "NII@NI225": "NII",
-    "LNS@FTSE100": "FTSE",
-    "NAS@IXIC": "NAS",
-    "SHS@000001": "SHS",
-    "PAS@CAC40": "CAC",
-    "SPI@SPX": "SPI",
-    "HSI@HSI": "HSI",
-    "XTR@DAX30": "DAX",
-    "INI@BSE30": "SENSEX"
-}
 
 
 class ParserWorld:
-    def __init__(self):
-        self.url = conf('world')['url']
-        self.currency = conf('world')['currency']
+    def __init__(self, conf):
+        self.url = conf['url']
+        self.currency = conf['currency']
         self.table = 'index'
         self.items = Manager().list()
 
     def parse(self, curr):
-        params = {"symbol": curr}
+        symbol, name = curr.split()
+        params = {"symbol": symbol}
         response = requests.get(self.url, params).text
         bs = BeautifulSoup(response, "html.parser")
 
@@ -41,7 +28,7 @@ class ParserWorld:
                             rows.find('span', class_='point_status').text, "point_dn")
 
         item = dict(
-            name=index_dict[curr],
+            name=name,
             date=convert_datetime_string(rows.find('td').text),
             price=price,
             status=status,

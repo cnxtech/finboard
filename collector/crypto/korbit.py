@@ -3,14 +3,13 @@ from multiprocessing import Pool
 
 import requests
 
-from utils import conf
 from utils import convert_timestamp_mills
 
 
 class ParserKorbit:
-    def __init__(self):
-        self.url = conf('korbit')['url']
-        self.currency = conf('korbit')['currency']
+    def __init__(self, conf):
+        self.url = conf['url']
+        self.currency = conf['currency']
         self.table = 'crypto'
         self.items = Manager().list()
 

@@ -6,14 +6,13 @@ from bs4 import BeautifulSoup
 
 from utils import add_status
 from utils import calculate_ratio
-from utils import conf
 from utils import convert_datetime_string
 
 
 class ParserWorld:
-    def __init__(self):
-        self.url = conf('world')['url']
-        self.currency = conf('world')['currency']
+    def __init__(self, conf):
+        self.url = conf['url']
+        self.currency = conf['currency']
         self.table = 'index'
         self.items = Manager().list()
 

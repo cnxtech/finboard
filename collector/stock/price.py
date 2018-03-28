@@ -3,8 +3,6 @@ from multiprocessing import Pool
 
 import pandas as pd
 
-from utils import conf
-
 columns = {
     '날짜': 'date',
     '종가': 'close',
@@ -17,9 +15,9 @@ columns = {
 
 
 class ParserStockPrice:
-    def __init__(self):
-        self.url = conf('stock')['url']
-        self.currency = conf('stock')['currency']
+    def __init__(self, conf):
+        self.url = conf['url']
+        self.currency = conf['currency']
         self.table = 'stock'
         self.items = Manager().list()
 

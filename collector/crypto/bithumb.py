@@ -3,14 +3,13 @@ from multiprocessing import Pool
 
 import requests
 
-from utils import conf
 from utils import convert_timestamp_mills
 
 
 class ParserBithumb:
-    def __init__(self):
-        self.url = conf('bithumb')['url']
-        self.currency = conf('bithumb')['currency']
+    def __init__(self, conf):
+        self.url = conf['url']
+        self.currency = conf['currency']
         self.table = 'crypto'
         self.items = Manager().list()
 

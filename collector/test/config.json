@@ -22,5 +22,9 @@
     "market": {
         "url": "http://finance.naver.com/marketindex/",
         "currency": []
+    },
+    "stock": {
+        "url": "http://finance.naver.com/item/sise_day.nhn?code={}",
+        "currency": ["035420", "035720", "000660", "005930", "068270"]
     }
 }

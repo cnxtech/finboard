@@ -1,6 +1,6 @@
 import unittest
 
-from collector.utils import conf
+from utils import conf
 from stock.price import ParserStockPrice
 
 

@@ -1,6 +1,6 @@
 import unittest
 
-from collector.utils import conf
+from utils import conf
 from index.local import ParserLocal
 from index.market import ParserMarket
 from index.world import ParserWorld

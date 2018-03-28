@@ -1,6 +1,6 @@
 import unittest
 
-from collector.utils import conf
+from utils import conf
 from crypto.bithumb import ParserBithumb
 from crypto.coinone import ParserCoinone
 from crypto.korbit import ParserKorbit

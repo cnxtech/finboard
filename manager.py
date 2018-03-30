@@ -19,12 +19,9 @@ class Manager(object):
         """Return set of available management commands"""
         return {'create', 'update', 'invoke'}
 
-    def run(self, command: str, payload: str=None) -> None:
+    def run(self, command: str, payload: str) -> None:
         """Execute one of the available commands"""
-        if command == 'invoke':
-            getattr(self, command)(payload)
-        else:
-            getattr(self, command)()
+        getattr(self, command)(payload)
 
     @staticmethod
     def pip_install(directory: str) -> None:
@@ -38,7 +35,7 @@ class Manager(object):
         pip.main(pip_args)
 
     @staticmethod
-    def make_zipfile(directory, zf):
+    def make_zipfile(directory, zf) -> None:
         for root, dirs, files in os.walk(directory):
             for filename in files:
                 if not filename.endswith('.pyc'):
@@ -52,11 +49,11 @@ class Manager(object):
                     )
 
     @staticmethod
-    def upload_to_s3():
+    def upload_to_s3() -> None:
         s3 = boto3.client('s3', 'ap-northeast-2')
         s3.upload_file('collector.zip', 'rogers-collector', 'collector.zip')
 
-    def create(self):
+    def create(self, _payload: str) -> None:
         self.pip_install(self.lambda_dir)
 
         # Make collector to zipfile
@@ -86,7 +83,7 @@ class Manager(object):
         )
         print(res)
 
-    def update(self):
+    def update(self, _payload: str) -> None:
         self.pip_install(self.lambda_dir)
 
         # Make collector to zipfile
@@ -111,7 +108,7 @@ class Manager(object):
         print(res)
 
     @staticmethod
-    def invoke(payload):
+    def invoke(payload: str) -> None:
         payload = {"target": payload}
         lambda_f = boto3.client('lambda', 'ap-northeast-2')
         res = lambda_f.invoke(
@@ -130,5 +127,5 @@ if __name__ == "__main__":
     parser.add_argument('--payload')
     args = parser.parse_args()
 
-    manager.run(args.command)
+    manager.run(args.command, args.payload)
     print("action finished!")

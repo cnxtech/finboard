@@ -1,5 +1,5 @@
 from multiprocessing import Manager
-from multiprocessing import Pool
+from multiprocessing import Process
 
 import requests
 
@@ -28,6 +28,13 @@ class ParserKorbit:
         self.items.append(item)
 
     def get_items(self):
-        pool = Pool()
-        pool.map(self.parse, self.currency)
+        procs = []
+        for index, curr in enumerate(self.currency):
+            proc = Process(target=self.parse, args=(curr,))
+            procs.append(proc)
+            proc.start()
+
+        for proc in procs:
+            proc.join()
+
         return self.items

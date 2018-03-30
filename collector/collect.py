@@ -10,7 +10,7 @@ from stock.price import ParserStockPrice
 from utils import conf
 
 
-def collect(event, context):
+def handler(event, context):
     parser = {
         "bithumb": ParserBithumb,
         "coinone": ParserCoinone,
@@ -33,9 +33,9 @@ def collect(event, context):
     with table.batch_writer() as batch:
         for each in items:
             batch.put_item(Item=each)
-    print("collect crypto finished!")
+    print("collect finished!")
 
 
 # For test
 if __name__ == '__main__':
-    collect({"target": "coinone"}, None)
+    handler({"target": "stock"}, None)

@@ -1,5 +1,5 @@
 from multiprocessing import Manager
-from multiprocessing import Pool
+from multiprocessing import Process
 
 import pandas as pd
 
@@ -35,6 +35,13 @@ class ParserStockPrice:
         self.items.append(item)
 
     def get_items(self):
-        pool = Pool()
-        pool.map(self.parse, self.currency)
+        procs = []
+        for _index, curr in enumerate(self.currency):
+            proc = Process(target=self.parse, args=(curr,))
+            procs.append(proc)
+            proc.start()
+
+        for proc in procs:
+            proc.join()
+
         return self.items

@@ -74,7 +74,7 @@ class Manager(object):
             FunctionName='collect',
             Runtime='python3.6',
             Role=os.getenv('LAMBDA_ROLE'),
-            Timeout=3,
+            Timeout=4,
             Handler='collect.handler',
             Code={
                 'S3Bucket': 'rogers-collector',

@@ -38,7 +38,7 @@ class ParserWorld:
 
     def get_items(self):
         procs = []
-        for index, curr in enumerate(self.currency):
+        for _index, curr in enumerate(self.currency):
             proc = Process(target=self.parse, args=(curr,))
             procs.append(proc)
             proc.start()

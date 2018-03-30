@@ -10,7 +10,7 @@ from stock.price import ParserStockPrice
 from utils import conf
 
 
-def collect(event, context):
+def handler(event, context):
     parser = {
         "bithumb": ParserBithumb,
         "coinone": ParserCoinone,
@@ -38,4 +38,4 @@ def collect(event, context):
 
 # For test
 if __name__ == '__main__':
-    collect({"target": "coinone"}, None)
+    handler({"target": "coinone"}, None)

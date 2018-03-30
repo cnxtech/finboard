@@ -33,7 +33,7 @@ def handler(event, context):
     with table.batch_writer() as batch:
         for each in items:
             batch.put_item(Item=each)
-    print("collect crypto finished!")
+    print("collect finished!")
 
 
 # For test

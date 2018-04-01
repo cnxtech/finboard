@@ -1,9 +1,9 @@
 import unittest
 
-from utils import conf
 from index.local import ParserLocal
 from index.market import ParserMarket
 from index.world import ParserWorld
+from utils import conf
 
 
 class TestIndexCollector(unittest.TestCase):

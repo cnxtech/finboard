@@ -20,7 +20,7 @@ class ParserKorbit:
 
         item = dict(
             exchange="korbit",
-            currency=curr.replace("_krw", ""),
+            name=curr.replace("_krw", ""),
             price=int(result["last"]),
             volume=round(float(result["volume"])),
             date=convert_timestamp_mills(result['timestamp'])

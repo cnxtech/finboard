@@ -1,11 +1,15 @@
 import argparse
 import json
 import os
+import shutil
 import zipfile
+from pprint import pprint
 from typing import Set
 
 import boto3
 import pip
+
+from lib import env
 
 
 class Manager(object):
@@ -13,6 +17,8 @@ class Manager(object):
 
     def __init__(self):
         self.lambda_dir = os.getcwd()
+        self.collector_dir = os.path.join(os.getcwd(), 'collector')
+        self.streamer_dir = os.path.join(os.getcwd(), 'streamer')
 
     @property
     def commands(self) -> Set[str]:
@@ -22,17 +28,6 @@ class Manager(object):
     def run(self, command: str, payload: str) -> None:
         """Execute one of the available commands"""
         getattr(self, command)(payload)
-
-    @staticmethod
-    def pip_install(directory: str) -> None:
-        pip_args = [
-            'install',
-            '-r',
-            os.path.join(directory, 'requirements.txt'),
-            '-t',
-            'dist'
-        ]
-        pip.main(pip_args)
 
     @staticmethod
     def make_zipfile(directory, zf) -> None:
@@ -50,73 +45,104 @@ class Manager(object):
 
     @staticmethod
     def upload_to_s3() -> None:
-        s3 = boto3.client('s3', 'ap-northeast-2')
-        s3.upload_file('collector.zip', 'rogers-collector', 'collector.zip')
+        s3 = boto3.client('s3', env.REGION)
+        s3.upload_file('collector.zip', env.BUCKET, 'collector.zip')
+        s3.upload_file('streamer.zip', env.BUCKET, 'streamer.zip')
+
+    def append_packages(self, directory: str, target: str) -> None:
+        dist_path = os.path.join(self.lambda_dir, 'dist/')
+        if not os.path.exists(dist_path):
+            os.makedirs(dist_path)
+        pip_args = [
+            'install',
+            '-r',
+            os.path.join(directory, 'requirements.txt'),
+            '-t',
+            os.path.join('dist')
+        ]
+        pip.main(pip_args)
+
+        # Append dist packages to zipfile
+        zipf = zipfile.ZipFile(target, 'a', zipfile.ZIP_DEFLATED)
+        self.make_zipfile(dist_path, zipf)
+        zipf.close()
+        shutil.rmtree(dist_path)
+
+    def refresh(self) -> None:
+        # Make collector to zipfile
+        zipf = zipfile.ZipFile('collector.zip', 'w', zipfile.ZIP_DEFLATED)
+        self.make_zipfile(os.path.join(self.lambda_dir, 'collector/'), zipf)
+        zipf.close()
+        self.append_packages('collector', 'collector.zip')
+
+        # Make streamer to zipfile
+        zipf = zipfile.ZipFile('streamer.zip', 'w', zipfile.ZIP_DEFLATED)
+        self.make_zipfile(os.path.join(self.lambda_dir, 'streamer/'), zipf)
+        zipf.close()
+        self.append_packages('streamer', 'streamer.zip')
+
+        # Upload and update lambda function
+        self.upload_to_s3()
 
     def create(self, _payload: str) -> None:
-        self.pip_install(self.lambda_dir)
-
-        # Make collector to zipfile
-        zipf = zipfile.ZipFile('collector.zip', 'w', zipfile.ZIP_DEFLATED)
-        self.make_zipfile(os.path.join(self.lambda_dir, 'collector/'), zipf)
-        zipf.close()
-
-        # Append dist packages to zipfile
-        zipf = zipfile.ZipFile('collector.zip', 'a', zipfile.ZIP_DEFLATED)
-        self.make_zipfile(os.path.join(self.lambda_dir, 'dist/'), zipf)
-        zipf.close()
-
-        # Upload and update lambda function
-        self.upload_to_s3()
+        self.refresh()
 
         lambda_f = boto3.client('lambda', 'ap-northeast-2')
-        res = lambda_f.create_function(
-            FunctionName='collect',
+        pprint(
+            lambda_f.create_function(
+                FunctionName='collector',
+                Runtime='python3.6',
+                Role=env.COLLECTOR_ROLE,
+                Timeout=10,
+                Handler='collect.handler',
+                Code={
+                    'S3Bucket': env.BUCKET,
+                    'S3Key': 'collector.zip'
+                }
+            ))
+
+        pprint(lambda_f.create_function(
+            FunctionName='streamer',
             Runtime='python3.6',
-            Role=os.getenv('LAMBDA_ROLE'),
-            Timeout=8,
-            Handler='collect.handler',
+            Role=env.STREAMER_ROLE,
+            Timeout=10,
+            Handler='stream.handler',
+            Environment={
+                'Variables': {
+                    'ES_ENDPOINT': env.ES_ENDPOINT
+                }
+            },
             Code={
-                'S3Bucket': 'rogers-collector',
-                'S3Key': 'collector.zip'
+                'S3Bucket': env.BUCKET,
+                'S3Key': 'streamer.zip'
             }
-        )
-        print(res)
+        ))
 
     def update(self, _payload: str) -> None:
-        self.pip_install(self.lambda_dir)
-
-        # Make collector to zipfile
-        zipf = zipfile.ZipFile('collector.zip', 'w', zipfile.ZIP_DEFLATED)
-        self.make_zipfile(os.path.join(self.lambda_dir, 'collector/'), zipf)
-        zipf.close()
-
-        # Append dist packages to zipfile
-        zipf = zipfile.ZipFile('collector.zip', 'a', zipfile.ZIP_DEFLATED)
-        self.make_zipfile(os.path.join(self.lambda_dir, 'dist/'), zipf)
-        zipf.close()
-
-        # Upload and update lambda function
-        self.upload_to_s3()
+        self.refresh()
 
         lambda_f = boto3.client('lambda', 'ap-northeast-2')
-        res = lambda_f.update_function_code(
-            FunctionName='collect',
-            S3Bucket='rogers-collector',
+        pprint(lambda_f.update_function_code(
+            FunctionName='collector',
+            S3Bucket=env.BUCKET,
             S3Key='collector.zip'
-        )
-        print(res)
+        ))
+
+        pprint(lambda_f.update_function_code(
+            FunctionName='streamer',
+            S3Bucket=env.BUCKET,
+            S3Key='streamer.zip'
+        ))
 
     @staticmethod
     def invoke(payload: str) -> None:
         payload = {"target": payload}
         lambda_f = boto3.client('lambda', 'ap-northeast-2')
-        res = lambda_f.invoke(
-            FunctionName='collect',
+        pprint(lambda_f.invoke(
+            FunctionName='collector',
             InvocationType='RequestResponse',
             Payload=bytes(json.dumps(payload, ensure_ascii=False).encode('utf8'))
-        )
-        print(res)
+        ))
 
 
 if __name__ == "__main__":
@@ -128,4 +154,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     manager.run(args.command, args.payload)
-    print("action finished!")
+    print("job finished!")

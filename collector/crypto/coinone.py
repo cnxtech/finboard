@@ -20,7 +20,7 @@ class ParserCoinone:
 
         item = dict(
             exchange="coinone",
-            currency=curr,
+            name=curr,
             price=int(result["last"]),
             volume=round(float(result["volume"])),
             date=convert_timestamp(result['timestamp'])

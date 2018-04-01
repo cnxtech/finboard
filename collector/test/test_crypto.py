@@ -1,9 +1,9 @@
 import unittest
 
-from utils import conf
 from crypto.bithumb import ParserBithumb
 from crypto.coinone import ParserCoinone
 from crypto.korbit import ParserKorbit
+from utils import conf
 
 
 class TestCryptoCollector(unittest.TestCase):

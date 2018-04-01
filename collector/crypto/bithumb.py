@@ -19,7 +19,7 @@ class ParserBithumb:
 
         item = dict(
             exchange="bithumb",
-            currency=curr.lower(),
+            name=curr.lower(),
             price=int(result["closing_price"]),
             volume=round(float(result["units_traded"])),
             date=convert_timestamp_mills(result['date'])

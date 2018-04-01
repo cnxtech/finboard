@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import shutil
 import zipfile
 from pprint import pprint
 from typing import Set
@@ -65,7 +66,7 @@ class Manager(object):
         zipf = zipfile.ZipFile(target, 'a', zipfile.ZIP_DEFLATED)
         self.make_zipfile(dist_path, zipf)
         zipf.close()
-        os.system('rm -rf {}'.format(dist_path))
+        shutil.rmtree(dist_path)
 
     def refresh(self) -> None:
         # Make collector to zipfile

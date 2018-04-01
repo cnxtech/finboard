@@ -145,7 +145,7 @@ def generate_id(record):
     # Concat HASH and RANGE key with | in between
     new_id = ""
     i = 0
-    for key, value in keys.items():
+    for _key, value in keys.items():
         if i > 0:
             new_id += "|"
         new_id += str(value)

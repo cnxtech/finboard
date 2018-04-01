@@ -1,7 +1,7 @@
 import unittest
 
-from utils import conf
 from stock.price import ParserStockPrice
+from utils import conf
 
 
 class TestIndexCollector(unittest.TestCase):

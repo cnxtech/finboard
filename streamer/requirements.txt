@@ -1,7 +1,4 @@
 boto3==1.6.6
 requests==2.18.4
-pandas==0.22.0
-lxml==3.8.0
-beautifulsoup4==4.6.0
 requests-aws4auth==0.9
 elasticsearch==6.2.0

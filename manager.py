@@ -7,6 +7,8 @@ from typing import Set
 import boto3
 import pip
 
+from lib import env
+
 
 class Manager(object):
     """Rogers-Collector management utility"""
@@ -25,6 +27,7 @@ class Manager(object):
 
     @staticmethod
     def pip_install(directory: str) -> None:
+        # TODO: Fix pip packages in each functions
         pip_args = [
             'install',
             '-r',
@@ -36,6 +39,7 @@ class Manager(object):
 
     @staticmethod
     def make_zipfile(directory, zf) -> None:
+        # TODO: Fix zipfile to make in each functions
         for root, _dirs, files in os.walk(directory):
             for filename in files:
                 if not filename.endswith('.pyc'):
@@ -50,6 +54,7 @@ class Manager(object):
 
     @staticmethod
     def upload_to_s3() -> None:
+        # TODO: Fix to upload each zip files
         s3 = boto3.client('s3', 'ap-northeast-2')
         s3.upload_file('collector.zip', 'rogers-collector', 'collector.zip')
 
@@ -73,7 +78,7 @@ class Manager(object):
         res = lambda_f.create_function(
             FunctionName='collect',
             Runtime='python3.6',
-            Role=os.getenv('LAMBDA_ROLE'),
+            Role=env.LAMBDA_ROLE,
             Timeout=8,
             Handler='collect.handler',
             Code={

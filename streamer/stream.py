@@ -1,13 +1,12 @@
 from __future__ import print_function
 
 import json
+import os
 import re
 
 import boto3
 from elasticsearch import Elasticsearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
-
-from lib import env
 
 reserved_fields = ["uid", "_id", "_type", "_source", "_all", "_parent", "_fieldnames",
                    "_routing", "_index", "_size", "_timestamp", "_ttl"]
@@ -31,7 +30,7 @@ def handler(event, context):
 
     # Connect to ES
     es = Elasticsearch(
-        [env.ES_ENDPOINT],
+        [os.getenv('ES_ENDPOINT')],
         http_auth=awsauth,
         use_ssl=True,
         verify_certs=True,

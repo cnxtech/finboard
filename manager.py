@@ -106,6 +106,11 @@ class Manager(object):
             Role=env.STREAMER_ROLE,
             Timeout=10,
             Handler='stream.handler',
+            Environment={
+                'Variables': {
+                    'ES_ENDPOINT': env.ES_ENDPOINT
+                }
+            },
             Code={
                 'S3Bucket': env.BUCKET,
                 'S3Key': 'streamer.zip'

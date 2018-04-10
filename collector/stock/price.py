@@ -1,5 +1,6 @@
 from multiprocessing import Manager
 from multiprocessing import Process
+from typing import List
 
 import pandas as pd
 
@@ -15,13 +16,13 @@ columns = {
 
 
 class ParserStockPrice:
-    def __init__(self, conf):
+    def __init__(self, conf: dict):
         self.url = conf['url']
         self.currency = conf['currency']
         self.table = 'stock'
         self.items = Manager().list()
 
-    def parse(self, curr):
+    def parse(self, curr: str):
         code, name = curr.split()
         df = pd.read_html(self.url.format(code), header=0)[0][:1]
         df = df.rename(columns=columns)
@@ -34,7 +35,7 @@ class ParserStockPrice:
         item.update(name=name)
         self.items.append(item)
 
-    def get_items(self):
+    def get_items(self) -> List[dict]:
         procs = []
         for _index, curr in enumerate(self.currency):
             proc = Process(target=self.parse, args=(curr,))

@@ -3,6 +3,7 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
+from typing import List
 from utils import add_status
 from utils import convert_datetime_string
 
@@ -15,7 +16,7 @@ index_dict = {
 
 
 class ParserMarket:
-    def __init__(self, conf):
+    def __init__(self, conf: dict):
         self.url = conf['url']
         self.currency = conf['currency']
         self.table = 'market'
@@ -53,6 +54,6 @@ class ParserMarket:
             )
             self.items.append(item)
 
-    def get_items(self):
+    def get_items(self) -> List[dict]:
         self.parse()
         return self.items

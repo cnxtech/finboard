@@ -1,3 +1,5 @@
+from typing import List
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -12,7 +14,7 @@ index_dict = {
 
 
 class ParserLocal:
-    def __init__(self, conf):
+    def __init__(self, conf: dict):
         self.url = conf['url']
         self.currency = conf['currency']
         self.table = 'index'
@@ -36,6 +38,6 @@ class ParserLocal:
             )
             self.items.append(item)
 
-    def get_items(self):
+    def get_items(self) -> List[dict]:
         self.parse()
         return self.items

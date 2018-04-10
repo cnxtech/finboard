@@ -1,5 +1,6 @@
 from multiprocessing import Manager
 from multiprocessing import Process
+from typing import List
 
 import requests
 from bs4 import BeautifulSoup
@@ -10,7 +11,7 @@ from utils import convert_datetime_string
 
 
 class ParserWorld:
-    def __init__(self, conf):
+    def __init__(self, conf: dict):
         self.url = conf['url']
         self.currency = conf['currency']
         self.table = 'index'
@@ -36,7 +37,7 @@ class ParserWorld:
         )
         self.items.append(item)
 
-    def get_items(self):
+    def get_items(self) -> List[dict]:
         procs = []
         for _index, curr in enumerate(self.currency):
             proc = Process(target=self.parse, args=(curr,))

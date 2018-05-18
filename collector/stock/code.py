@@ -18,8 +18,8 @@ class ParserStockCode:
         for each in self.currency:
             df = pd.read_html(self.url.format(INDEX_DICT[each]), header=0)[0]
             df = df.rename(columns={
-                '회사명': 'name',
                 '종목코드': 'code',
+                '회사명': 'name',
                 '업종': 'industry',
                 '주요제품': 'product',
                 '상장일': 'opening_date',
@@ -35,6 +35,3 @@ class ParserStockCode:
     def get_items(self) -> pd.DataFrame:
         self.parse()
         return pd.concat(self.items)
-
-    def save_items(self):
-        raise NotImplementedError

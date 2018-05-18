@@ -9,7 +9,7 @@ from typing import Set
 import boto3
 import pip
 
-from collector.utils import conf
+from batch import run_batch
 from lib import env
 
 
@@ -149,16 +149,9 @@ class Manager(object):
             Payload=bytes(json.dumps(payload, ensure_ascii=False).encode('utf8'))
         ))
 
-    def batch(self, _payload: str) -> None:
-        from collector.stock.code import ParserStockCode
-
-        dist_path = "{}code.parquet".format(self.dist_dir)
-        code = ParserStockCode(conf('code'))
-        df = code.get_items()
-        df.to_parquet(dist_path, engine='pyarrow')
-
-        s3 = boto3.client('s3', env.REGION)
-        s3.upload_file(dist_path, env.BUCKET, 'code.parquet')
+    @staticmethod
+    def batch(_payload: str) -> None:
+        run_batch()
 
 
 if __name__ == "__main__":

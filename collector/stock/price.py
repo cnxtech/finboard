@@ -1,5 +1,6 @@
 from multiprocessing import Manager
 from multiprocessing import Process
+from multiprocessing import Pool
 from typing import List
 
 import pandas as pd
@@ -44,5 +45,7 @@ class ParserStockPrice:
 
         return self.items
 
-    def save_items(self):
-        raise NotImplementedError
+    def get_all_items(self) -> List[dict]:
+        pool = Pool()
+        pool.map(self.parse, self.currency)
+        return self.items

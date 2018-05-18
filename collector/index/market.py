@@ -3,10 +3,11 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
+from typing import List
 from utils import add_status
 from utils import convert_datetime_string
 
-index_dict = {
+INDEX_DICT = {
     "WTI": "WTI",
     "휘발유": "GSOIL",
     "국제 금": "WGOLD",
@@ -15,7 +16,7 @@ index_dict = {
 
 
 class ParserMarket:
-    def __init__(self, conf):
+    def __init__(self, conf: dict):
         self.url = conf['url']
         self.currency = conf['currency']
         self.table = 'market'
@@ -46,13 +47,13 @@ class ParserMarket:
                                 each.find('span', class_='change').text, "point_dn")
 
             item = dict(
-                name=index_dict[each.find('span').text],
+                name=INDEX_DICT[each.find('span').text],
                 price=each.find('span', class_='value').text,
                 status=status,
                 date=convert_datetime_string(each.find('span', class_='time').text)
             )
             self.items.append(item)
 
-    def get_items(self):
+    def get_items(self) -> List[dict]:
         self.parse()
         return self.items

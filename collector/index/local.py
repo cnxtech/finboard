@@ -1,10 +1,12 @@
+from typing import List
+
 import requests
 from bs4 import BeautifulSoup
 
 from utils import add_status
 from utils import current_datetime
 
-index_dict = {
+INDEX_DICT = {
     "코스피": "KOSPI",
     "코스닥": "KOSDAQ",
     "코스피200": "KOSPI200"
@@ -12,7 +14,7 @@ index_dict = {
 
 
 class ParserLocal:
-    def __init__(self, conf):
+    def __init__(self, conf: dict):
         self.url = conf['url']
         self.currency = conf['currency']
         self.table = 'index'
@@ -28,7 +30,7 @@ class ParserLocal:
             status = add_status(tmp[1][0], tmp[0], "-")
 
             item = dict(
-                name=index_dict[rows[0]],
+                name=INDEX_DICT[rows[0]],
                 price=rows[1],
                 status=status,
                 rate=tmp[1][:-3].replace("+", ""),
@@ -36,6 +38,6 @@ class ParserLocal:
             )
             self.items.append(item)
 
-    def get_items(self):
+    def get_items(self) -> List[dict]:
         self.parse()
         return self.items

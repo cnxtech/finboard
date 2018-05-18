@@ -1,4 +1,4 @@
-# Rogers-Collector [![Build Status](https://travis-ci.org/Swalloow/Rogers-Collector.svg?branch=master)](https://travis-ci.org/Swalloow/Rogers-Collector) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f853e1b3eaa24a0590b5a66245406616)](https://www.codacy.com/app/Swalloow/Rogers-Collector?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Swalloow/Rogers-Collector&amp;utm_campaign=Badge_Grade)
+# finboard [![Build Status](https://travis-ci.org/Swalloow/finboard.svg?branch=master)](https://travis-ci.org/Swalloow/finboard) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f853e1b3eaa24a0590b5a66245406616)](https://www.codacy.com/app/Swalloow/finboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Swalloow/finboard&amp;utm_campaign=Badge_Grade)
 Collect financial features
 
 # Architecture

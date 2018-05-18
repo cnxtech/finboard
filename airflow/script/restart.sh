@@ -11,7 +11,7 @@ if [ "$(docker ps -a | grep airflow)" ]; then
 fi
 
 echo "Update git repository"
-pushd /home/ec2-user/Rogers-Collector/airflow
+pushd /home/ec2-user/finboard/airflow
 git pull
 
 echo "Start docker container"

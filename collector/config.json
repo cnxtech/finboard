@@ -1,19 +1,38 @@
 {
     "bithumb": {
         "url": "https://api.bithumb.com/public/ticker/",
-        "currency": ["BTC", "ETH", "XRP"]
+        "currency": [
+            "BTC",
+            "ETH",
+            "XRP"
+        ]
     },
     "coinone": {
         "url": "https://api.coinone.co.kr/ticker/",
-        "currency": ["btc", "eth", "xrp"]
+        "currency": [
+            "btc",
+            "eth",
+            "xrp"
+        ]
     },
     "korbit": {
         "url": "https://api.korbit.co.kr/v1/ticker/detailed",
-        "currency": ["btc_krw", "eth_krw", "xrp_krw"]
+        "currency": [
+            "btc_krw",
+            "eth_krw",
+            "xrp_krw"
+        ]
     },
     "world": {
         "url": "http://finance.naver.com/world/sise.nhn",
-        "currency": ["NII@NI225 NII", "NAS@IXIC NAS", "SHS@000001 SHS", "SPI@SPX SPI", "XTR@DAX30 DAX", "INI@BSE30 SENSEX"]
+        "currency": [
+            "NII@NI225 NII",
+            "NAS@IXIC NAS",
+            "SHS@000001 SHS",
+            "SPI@SPX SPI",
+            "XTR@DAX30 DAX",
+            "INI@BSE30 SENSEX"
+        ]
     },
     "local": {
         "url": "http://finance.naver.com/sise/",
@@ -25,6 +44,19 @@
     },
     "stock": {
         "url": "http://finance.naver.com/item/sise_day.nhn?code={}",
-        "currency": ["035420 NAVER", "035720 KAKAO", "000660 HYNIX", "005930 SS_ELECTRON", "068270 CELLTRION"]
+        "currency": [
+            "035420",
+            "035720",
+            "000660",
+            "005930",
+            "068270"
+        ]
+    },
+    "code": {
+        "url": "http://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13&marketType={}",
+        "currency": [
+            "kospi",
+            "kosdaq"
+        ]
     }
 }

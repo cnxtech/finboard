@@ -10,10 +10,12 @@ __pycache__/
 env/
 build/
 dist/
+packages/
 downloads/
 var/
 wheels/
 *.zip
+*.parquet
 
 # Unit test / coverage reports
 .tox/

@@ -53,7 +53,7 @@ class Manager(object):
         s3.upload_file(self.collector_zip, env.BUCKET, 'collector.zip')
         s3.upload_file(self.streamer_zip, env.BUCKET, 'streamer.zip')
 
-    def append_packages(self, directory: str, target: str, remove: bool) -> None:
+    def append_packages(self, directory: str, target: str) -> None:
         if not os.path.exists(self.pack_dir):
             os.makedirs(self.pack_dir)
         pip_args = [
@@ -69,7 +69,6 @@ class Manager(object):
         zipf = zipfile.ZipFile(target, 'a', zipfile.ZIP_DEFLATED)
         self.make_zipfile(self.pack_dir, zipf)
         zipf.close()
-        shutil.rmtree(self.pack_dir) if remove is True else None
 
     def refresh(self) -> None:
         # Make collector to zipfile
@@ -77,14 +76,14 @@ class Manager(object):
         zipf = zipfile.ZipFile(dist_path, 'w', zipfile.ZIP_DEFLATED)
         self.make_zipfile(os.path.join(self.lambda_dir, 'collector/'), zipf)
         zipf.close()
-        self.append_packages('collector', dist_path, remove=False)
+        self.append_packages('collector', dist_path)
 
         # Make streamer to zipfile
         dist_path = '{}streamer.zip'.format(self.dist_dir)
         zipf = zipfile.ZipFile(dist_path, 'w', zipfile.ZIP_DEFLATED)
         self.make_zipfile(os.path.join(self.lambda_dir, 'streamer/'), zipf)
         zipf.close()
-        self.append_packages('streamer', dist_path, remove=False)
+        self.append_packages('streamer', dist_path)
 
         # Upload and update lambda function
         self.upload_to_s3()

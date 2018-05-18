@@ -9,6 +9,7 @@ from index.local import ParserLocal
 from index.market import ParserMarket
 from index.world import ParserWorld
 from stock.price import ParserStockPrice
+from stock.code import ParserStockCode
 from utils import conf
 
 

@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from utils import add_status
 from utils import current_datetime
 
-index_dict = {
+INDEX_DICT = {
     "코스피": "KOSPI",
     "코스닥": "KOSDAQ",
     "코스피200": "KOSPI200"
@@ -30,7 +30,7 @@ class ParserLocal:
             status = add_status(tmp[1][0], tmp[0], "-")
 
             item = dict(
-                name=index_dict[rows[0]],
+                name=INDEX_DICT[rows[0]],
                 price=rows[1],
                 status=status,
                 rate=tmp[1][:-3].replace("+", ""),

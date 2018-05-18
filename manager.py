@@ -9,6 +9,7 @@ from typing import Set
 import boto3
 import pip
 
+from collector.utils import conf
 from lib import env
 
 
@@ -23,7 +24,7 @@ class Manager(object):
     @property
     def commands(self) -> Set[str]:
         """Return set of available management commands"""
-        return {'create', 'update', 'invoke'}
+        return {'create', 'update', 'invoke', 'batch'}
 
     def run(self, command: str, payload: str) -> None:
         """Execute one of the available commands"""
@@ -144,6 +145,17 @@ class Manager(object):
             Payload=bytes(json.dumps(payload, ensure_ascii=False).encode('utf8'))
         ))
 
+    @staticmethod
+    def batch(_payload: str) -> None:
+        from collector.stock.code import ParserStockCode
+
+        code = ParserStockCode(conf('code'))
+        df = code.get_items()
+        df.to_parquet("code.parquet", engine='pyarrow')
+
+        s3 = boto3.client('s3', env.REGION)
+        s3.upload_file('code.parquet', env.BUCKET, 'code.parquet')
+
 
 if __name__ == "__main__":
     manager = Manager()
@@ -154,4 +166,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     manager.run(args.command, args.payload)
-    print("job finished!")
+    print("{} job finished!".format(args.command))

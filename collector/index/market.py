@@ -7,7 +7,7 @@ from typing import List
 from utils import add_status
 from utils import convert_datetime_string
 
-index_dict = {
+INDEX_DICT = {
     "WTI": "WTI",
     "휘발유": "GSOIL",
     "국제 금": "WGOLD",
@@ -47,7 +47,7 @@ class ParserMarket:
                                 each.find('span', class_='change').text, "point_dn")
 
             item = dict(
-                name=index_dict[each.find('span').text],
+                name=INDEX_DICT[each.find('span').text],
                 price=each.find('span', class_='value').text,
                 status=status,
                 date=convert_datetime_string(each.find('span', class_='time').text)

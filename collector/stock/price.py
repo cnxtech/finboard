@@ -4,16 +4,6 @@ from typing import List
 
 import pandas as pd
 
-columns = {
-    '날짜': 'date',
-    '종가': 'close',
-    '전일비': 'diff',
-    '시가': 'open',
-    '고가': 'high',
-    '저가': 'low',
-    '거래량': 'volume'
-}
-
 
 class ParserStockPrice:
     def __init__(self, conf: dict):
@@ -25,7 +15,15 @@ class ParserStockPrice:
     def parse(self, curr: str):
         code, name = curr.split()
         df = pd.read_html(self.url.format(code), header=0)[0][:1]
-        df = df.rename(columns=columns)
+        df = df.rename(columns={
+            '날짜': 'date',
+            '종가': 'close',
+            '전일비': 'diff',
+            '시가': 'open',
+            '고가': 'high',
+            '저가': 'low',
+            '거래량': 'volume'
+        })
 
         df[['close', 'diff', 'open', 'high', 'low', 'volume']] \
             = df[['close', 'diff', 'open', 'high', 'low', 'volume']].astype(int)

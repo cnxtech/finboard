@@ -8,8 +8,6 @@ from crypto.korbit import ParserKorbit
 from index.local import ParserLocal
 from index.market import ParserMarket
 from index.world import ParserWorld
-from stock.price import ParserStockPrice
-from stock.code import ParserStockCode
 from utils import conf
 
 
@@ -21,7 +19,6 @@ def handler(event, context):
         "local": ParserLocal,
         "market": ParserMarket,
         "world": ParserWorld,
-        "stock": ParserStockPrice
     }
 
     target = event['target']

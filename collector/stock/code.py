@@ -1,5 +1,3 @@
-from typing import List
-
 import pandas as pd
 
 INDEX_DICT = {
@@ -14,7 +12,6 @@ class ParserStockCode:
         self.url = conf['url']
         self.currency = conf['currency']
         self.table = 'code'
-        self.overwrite = True
         self.items = []
 
     def parse(self):
@@ -38,3 +35,6 @@ class ParserStockCode:
     def get_items(self) -> pd.DataFrame:
         self.parse()
         return pd.concat(self.items)
+
+    def save_items(self):
+        raise NotImplementedError

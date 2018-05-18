@@ -45,11 +45,11 @@
     "stock": {
         "url": "http://finance.naver.com/item/sise_day.nhn?code={}",
         "currency": [
-            "035420 NAVER",
-            "035720 KAKAO",
-            "000660 HYNIX",
-            "005930 SS_ELECTRON",
-            "068270 CELLTRION"
+            "035420",
+            "035720",
+            "000660",
+            "005930",
+            "068270"
         ]
     },
     "code": {

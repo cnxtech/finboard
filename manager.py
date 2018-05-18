@@ -14,12 +14,16 @@ from lib import env
 
 
 class Manager(object):
-    """Rogers-Collector management utility"""
+    """finboard management utility"""
 
     def __init__(self):
         self.lambda_dir = os.getcwd()
         self.collector_dir = os.path.join(os.getcwd(), 'collector')
         self.streamer_dir = os.path.join(os.getcwd(), 'streamer')
+        self.dist_dir = os.path.join(os.getcwd(), 'dist/')
+        self.pack_dir = os.path.join(os.getcwd(), 'packages/')
+        self.collector_zip = '{}collector.zip'.format(self.dist_dir)
+        self.streamer_zip = '{}streamer.zip'.format(self.dist_dir)
 
     @property
     def commands(self) -> Set[str]:
@@ -44,43 +48,43 @@ class Manager(object):
                         )
                     )
 
-    @staticmethod
-    def upload_to_s3() -> None:
+    def upload_to_s3(self) -> None:
         s3 = boto3.client('s3', env.REGION)
-        s3.upload_file('collector.zip', env.BUCKET, 'collector.zip')
-        s3.upload_file('streamer.zip', env.BUCKET, 'streamer.zip')
+        s3.upload_file(self.collector_zip, env.BUCKET, 'collector.zip')
+        s3.upload_file(self.streamer_zip, env.BUCKET, 'streamer.zip')
 
-    def append_packages(self, directory: str, target: str) -> None:
-        dist_path = os.path.join(self.lambda_dir, 'dist/')
-        if not os.path.exists(dist_path):
-            os.makedirs(dist_path)
+    def append_packages(self, directory: str, target: str, remove: bool) -> None:
+        if not os.path.exists(self.pack_dir):
+            os.makedirs(self.pack_dir)
         pip_args = [
             'install',
             '-r',
             os.path.join(directory, 'requirements.txt'),
             '-t',
-            os.path.join('dist')
+            os.path.join('packages')
         ]
         pip.main(pip_args)
 
         # Append dist packages to zipfile
         zipf = zipfile.ZipFile(target, 'a', zipfile.ZIP_DEFLATED)
-        self.make_zipfile(dist_path, zipf)
+        self.make_zipfile(self.pack_dir, zipf)
         zipf.close()
-        shutil.rmtree(dist_path)
+        shutil.rmtree(self.pack_dir) if remove is True else None
 
     def refresh(self) -> None:
         # Make collector to zipfile
-        zipf = zipfile.ZipFile('collector.zip', 'w', zipfile.ZIP_DEFLATED)
+        dist_path = '{}collector.zip'.format(self.dist_dir)
+        zipf = zipfile.ZipFile(dist_path, 'w', zipfile.ZIP_DEFLATED)
         self.make_zipfile(os.path.join(self.lambda_dir, 'collector/'), zipf)
         zipf.close()
-        self.append_packages('collector', 'collector.zip')
+        self.append_packages('collector', dist_path, remove=False)
 
         # Make streamer to zipfile
-        zipf = zipfile.ZipFile('streamer.zip', 'w', zipfile.ZIP_DEFLATED)
+        dist_path = '{}streamer.zip'.format(self.dist_dir)
+        zipf = zipfile.ZipFile(dist_path, 'w', zipfile.ZIP_DEFLATED)
         self.make_zipfile(os.path.join(self.lambda_dir, 'streamer/'), zipf)
         zipf.close()
-        self.append_packages('streamer', 'streamer.zip')
+        self.append_packages('streamer', dist_path, remove=False)
 
         # Upload and update lambda function
         self.upload_to_s3()
@@ -94,7 +98,7 @@ class Manager(object):
                 FunctionName='collector',
                 Runtime='python3.6',
                 Role=env.COLLECTOR_ROLE,
-                Timeout=10,
+                Timeout=300,
                 Handler='collect.handler',
                 Code={
                     'S3Bucket': env.BUCKET,
@@ -145,16 +149,16 @@ class Manager(object):
             Payload=bytes(json.dumps(payload, ensure_ascii=False).encode('utf8'))
         ))
 
-    @staticmethod
-    def batch(_payload: str) -> None:
+    def batch(self, _payload: str) -> None:
         from collector.stock.code import ParserStockCode
 
+        dist_path = "{}code.parquet".format(self.dist_dir)
         code = ParserStockCode(conf('code'))
         df = code.get_items()
-        df.to_parquet("code.parquet", engine='pyarrow')
+        df.to_parquet(dist_path, engine='pyarrow')
 
         s3 = boto3.client('s3', env.REGION)
-        s3.upload_file('code.parquet', env.BUCKET, 'code.parquet')
+        s3.upload_file(dist_path, env.BUCKET, 'code.parquet')
 
 
 if __name__ == "__main__":

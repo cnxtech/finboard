@@ -13,8 +13,7 @@ class ParserStockPrice:
         self.items = Manager().list()
 
     def parse(self, curr: str):
-        code, name = curr.split()
-        df = pd.read_html(self.url.format(code), header=0)[0][:1]
+        df = pd.read_html(self.url.format(curr), header=0)[0][:1]
         df = df.rename(columns={
             '날짜': 'date',
             '종가': 'close',
@@ -30,7 +29,7 @@ class ParserStockPrice:
 
         df['date'] = df['date'].apply(lambda d: str(pd.to_datetime(d)))
         item = df.to_dict(orient='records')[-1]
-        item.update(name=name)
+        item.update(name=curr)
         self.items.append(item)
 
     def get_items(self) -> List[dict]:
@@ -44,3 +43,6 @@ class ParserStockPrice:
             proc.join()
 
         return self.items
+
+    def save_items(self):
+        raise NotImplementedError

@@ -45,5 +45,5 @@ def run_batch():
     dist_path = "{}code.parquet".format(dist_dir)
 
     # Run batch collector
-    # collect_stock_code(dist_path)
+    collect_stock_code(dist_path)
     collect_stock_price(dist_path)

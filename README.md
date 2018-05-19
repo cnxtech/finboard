@@ -1,4 +1,4 @@
-# finboard [![Build Status](https://travis-ci.org/Swalloow/finboard.svg?branch=master)](https://travis-ci.org/Swalloow/finboard) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f853e1b3eaa24a0590b5a66245406616)](https://www.codacy.com/app/Swalloow/finboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Swalloow/finboard&amp;utm_campaign=Badge_Grade)
+# Finboard [![Build Status](https://travis-ci.org/Swalloow/finboard.svg?branch=master)](https://travis-ci.org/Swalloow/finboard) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f853e1b3eaa24a0590b5a66245406616)](https://www.codacy.com/app/Swalloow/finboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Swalloow/finboard&amp;utm_campaign=Badge_Grade)
 Collect financial features
 
 # Architecture
@@ -52,4 +52,17 @@ stock (name: PK, date: SK)
  - diff (변화)
  - volume (거래량)
  - date (날짜) : "%Y-%m-%d %H:%M:%S"
+```
+```
+code (code: PK)
+- code (종목코드)
+- name (회사명)
+- market (상장마켓) : kospi, kosdaq, konex
+- industry (업종)
+- product (주요제품)
+- opening_date (상장일)
+- closing_month (결산월)
+- ceo (대표자명)
+- homepage (홈페이지)
+- local (지역)
 ```

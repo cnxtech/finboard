@@ -38,4 +38,4 @@ def handler(event, context):
 
 # For test
 if __name__ == '__main__':
-    handler({"target": "stock"}, None)
+    handler({"target": "bithumb"}, None)

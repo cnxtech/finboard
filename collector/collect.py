@@ -8,7 +8,7 @@ from crypto.korbit import ParserKorbit
 from index.local import ParserLocal
 from index.market import ParserMarket
 from index.world import ParserWorld
-from utils import conf
+from utils import conf, send_message
 
 
 def handler(event, context):
@@ -33,7 +33,7 @@ def handler(event, context):
     with table.batch_writer() as batch:
         for each in items:
             batch.put_item(Item=each)
-    print("collect finished!")
+    send_message("monitoring", "{} collect finished!".format(target))
 
 
 # For test

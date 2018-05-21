@@ -4,6 +4,8 @@ import re
 from datetime import datetime
 
 import pandas as pd
+from slackclient import SlackClient
+
 
 PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -13,6 +15,15 @@ def conf(target: str) -> dict:
     with open(path, 'r') as f:
         config = json.load(f)
     return config[target]
+
+
+def send_message(channel: str, message: str):
+    SlackClient(os.getenv('SLACK_TOKEN')).api_call(
+        "chat.postMessage",
+        channel=channel,
+        text=message
+    )
+    return True
 
 
 def add_status(cls_name: str, status: str, value: str) -> str:

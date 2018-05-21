@@ -99,6 +99,11 @@ class Manager(object):
                 Role=env.COLLECTOR_ROLE,
                 Timeout=300,
                 Handler='collect.handler',
+                Environment={
+                    'Variables': {
+                        'SLACK_TOKEN': env.SLACK_TOKEN
+                    }
+                },
                 Code={
                     'S3Bucket': env.BUCKET,
                     'S3Key': 'collector.zip'

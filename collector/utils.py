@@ -6,7 +6,6 @@ from datetime import datetime
 import pandas as pd
 from slackclient import SlackClient
 
-from lib.env import SLACK_TOKEN
 
 PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -19,7 +18,7 @@ def conf(target: str) -> dict:
 
 
 def send_message(channel: str, message: str):
-    SlackClient(SLACK_TOKEN).api_call(
+    SlackClient(os.getenv('SLACK_TOKEN')).api_call(
         "chat.postMessage",
         channel=channel,
         text=message

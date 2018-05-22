@@ -34,7 +34,7 @@ class ParserMarket:
 
             item = dict(
                 name=re.sub('[^a-zA-Z]+', '', each.find('span').text),
-                price=float(each.find('span', class_='value').text.replace(",", "")),
+                price=each.find('span', class_='value').text.replace(",", ""),
                 status=status,
                 date=convert_datetime_string(each.find('span', class_='time').text)
             )
@@ -48,7 +48,7 @@ class ParserMarket:
 
             item = dict(
                 name=INDEX_DICT[each.find('span').text],
-                price=float(each.find('span', class_='value').text.replace(",", "")),
+                price=each.find('span', class_='value').text.replace(",", ""),
                 status=status,
                 date=convert_datetime_string(each.find('span', class_='time').text)
             )

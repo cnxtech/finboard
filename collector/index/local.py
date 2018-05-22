@@ -31,7 +31,7 @@ class ParserLocal:
 
             item = dict(
                 name=INDEX_DICT[rows[0]],
-                price=float(rows[1].replace(",", "")),
+                price=rows[1].replace(",", ""),
                 status=status,
                 rate=tmp[1][:-3].replace("+", ""),
                 date=current_datetime()

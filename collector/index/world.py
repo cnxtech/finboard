@@ -31,7 +31,7 @@ class ParserWorld:
         item = dict(
             name=name,
             date=convert_datetime_string(rows.find('td').text),
-            price=float(price.replace(",", "")),
+            price=price.replace(",", ""),
             status=status,
             rate=calculate_ratio(status, price.replace(",", ""))
         )

@@ -97,7 +97,7 @@ class Manager(object):
                 FunctionName='collector',
                 Runtime='python3.6',
                 Role=env.COLLECTOR_ROLE,
-                Timeout=300,
+                Timeout=50,
                 Handler='collect.handler',
                 Environment={
                     'Variables': {
@@ -114,7 +114,7 @@ class Manager(object):
             FunctionName='streamer',
             Runtime='python3.6',
             Role=env.STREAMER_ROLE,
-            Timeout=10,
+            Timeout=30,
             Handler='stream.handler',
             Environment={
                 'Variables': {

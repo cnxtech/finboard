@@ -10,6 +10,9 @@
 # Architecture
 ![architecture](http://drive.google.com/uc?export=view&id=1Dt0dNppLMPp1hAWrj8y8au0Y5QO-DUHN)
 
+# Dashboard
+![dashboard](http://drive.google.com/uc?export=view&id=12CbBgB9mZptB6SPEa2m_dRBXUpnbrPw1)
+
 ## Deploy to AWS Lambda
 
 ```

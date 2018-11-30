@@ -43,5 +43,6 @@ venv/
 ENV/
 
 # configuration
+.idea
 *.cfg
 lib/env.py

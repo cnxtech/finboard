@@ -1,6 +1,6 @@
 # manager
 boto3==1.6.6
-requests==2.20.1
+requests==2.31.0
 pandas==0.22.0
 pyarrow
 
